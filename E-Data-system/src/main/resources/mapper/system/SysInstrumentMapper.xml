@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.handa.system.mapper.SysInstrumentMapper">
+    
+    <resultMap type="SysInstrument" id="SysInstrumentResult">
+        <result property="instrumentId"    column="instrument_id"    />
+        <result property="instrumentNumber"    column="instrument_number"    />
+        <result property="instrumentName"    column="instrument_name"    />
+        <result property="instrumentModel"    column="instrument_model"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysInstrumentVo">
+        select instrument_id, instrument_number, instrument_name, instrument_model, remark from sys_instrument
+    </sql>
+
+    <select id="selectSysInstrumentList" parameterType="SysInstrument" resultMap="SysInstrumentResult">
+        <include refid="selectSysInstrumentVo"/>
+        <where>  
+            <if test="instrumentNumber != null  and instrumentNumber != ''"> and instrument_number like concat('%', #{instrumentNumber}, '%')</if>
+            <if test="instrumentName != null  and instrumentName != ''"> and instrument_name like concat('%', #{instrumentName}, '%')</if>
+            <if test="instrumentModel != null  and instrumentModel != ''"> and instrument_model like concat('%', #{instrumentModel}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSysInstrumentByInstrumentId" parameterType="Long" resultMap="SysInstrumentResult">
+        <include refid="selectSysInstrumentVo"/>
+        where instrument_id = #{instrumentId}
+    </select>
+        
+    <insert id="insertSysInstrument" parameterType="SysInstrument" useGeneratedKeys="true" keyProperty="instrumentId">
+        insert into sys_instrument
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="instrumentNumber != null">instrument_number,</if>
+            <if test="instrumentName != null">instrument_name,</if>
+            <if test="instrumentModel != null">instrument_model,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="instrumentNumber != null">#{instrumentNumber},</if>
+            <if test="instrumentName != null">#{instrumentName},</if>
+            <if test="instrumentModel != null">#{instrumentModel},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysInstrument" parameterType="SysInstrument">
+        update sys_instrument
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="instrumentNumber != null">instrument_number = #{instrumentNumber},</if>
+            <if test="instrumentName != null">instrument_name = #{instrumentName},</if>
+            <if test="instrumentModel != null">instrument_model = #{instrumentModel},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where instrument_id = #{instrumentId}
+    </update>
+
+    <delete id="deleteSysInstrumentByInstrumentId" parameterType="Long">
+        delete from sys_instrument where instrument_id = #{instrumentId}
+    </delete>
+
+    <delete id="deleteSysInstrumentByInstrumentIds" parameterType="String">
+        delete from sys_instrument where instrument_id in 
+        <foreach item="instrumentId" collection="array" open="(" separator="," close=")">
+            #{instrumentId}
+        </foreach>
+    </delete>
+</mapper>
