@@ -3,7 +3,8 @@
 
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>数据电子化管理系统</h2>
+        <h2>欢迎登录数据电子化管理系统</h2>
+        <h2>{{user.nickName}}</h2>
         <p>
           这是首页         包含对数据的记录
           人员管理
@@ -30,15 +31,37 @@
 </template>
 
 <script>
+
+
+import { getUserProfile } from "@/api/system/user";
+
 export default {
   name: "Index",
   data() {
     return {
       // 版本号
       version: "1.0.0",
+
+      user: {},
+      roleGroup: {},
+      postGroup: {},
+      activeTab: "userinfo"
     };
   },
+
+  created() {
+    this.getUser();
+  },
+
   methods: {
+    getUser() {
+      getUserProfile().then(response => {
+        this.user = response.data;
+        this.roleGroup = response.roleGroup;
+        this.postGroup = response.postGroup;
+      });
+    },
+
     goTarget(href) {
       window.open(href, "_blank");
     },

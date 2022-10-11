@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.handa.system.mapper.SysPhenomenonMapper">
+    
+    <resultMap type="SysPhenomenon" id="SysPhenomenonResult">
+        <result property="phenomenonId"    column="phenomenon_id"    />
+        <result property="drawingNumber"    column="drawing_number"    />
+        <result property="phenomenon"    column="phenomenon"    />
+    </resultMap>
+
+    <sql id="selectSysPhenomenonVo">
+        select phenomenon_id, drawing_number, phenomenon from sys_phenomenon
+    </sql>
+
+    <select id="selectSysPhenomenonList" parameterType="SysPhenomenon" resultMap="SysPhenomenonResult">
+        <include refid="selectSysPhenomenonVo"/>
+        <where>  
+            <if test="drawingNumber != null  and drawingNumber != ''"> and drawing_number like concat('%', #{drawingNumber}, '%')</if>
+            <if test="phenomenon != null  and phenomenon != ''"> and phenomenon like concat('%', #{phenomenon}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSysPhenomenonByPhenomenonId" parameterType="Long" resultMap="SysPhenomenonResult">
+        <include refid="selectSysPhenomenonVo"/>
+        where phenomenon_id = #{phenomenonId}
+    </select>
+        
+    <insert id="insertSysPhenomenon" parameterType="SysPhenomenon" useGeneratedKeys="true" keyProperty="phenomenonId">
+        insert into sys_phenomenon
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="drawingNumber != null">drawing_number,</if>
+            <if test="phenomenon != null">phenomenon,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="drawingNumber != null">#{drawingNumber},</if>
+            <if test="phenomenon != null">#{phenomenon},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysPhenomenon" parameterType="SysPhenomenon">
+        update sys_phenomenon
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="drawingNumber != null">drawing_number = #{drawingNumber},</if>
+            <if test="phenomenon != null">phenomenon = #{phenomenon},</if>
+        </trim>
+        where phenomenon_id = #{phenomenonId}
+    </update>
+
+    <delete id="deleteSysPhenomenonByPhenomenonId" parameterType="Long">
+        delete from sys_phenomenon where phenomenon_id = #{phenomenonId}
+    </delete>
+
+    <delete id="deleteSysPhenomenonByPhenomenonIds" parameterType="String">
+        delete from sys_phenomenon where phenomenon_id in 
+        <foreach item="phenomenonId" collection="array" open="(" separator="," close=")">
+            #{phenomenonId}
+        </foreach>
+    </delete>
+</mapper>

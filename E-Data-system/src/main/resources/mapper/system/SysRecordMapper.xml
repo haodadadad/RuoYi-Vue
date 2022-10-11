@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.handa.system.mapper.SysRecordMapper">
+    
+    <resultMap type="SysRecord" id="SysRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="instrumentNumber"    column="instrument_number"    />
+        <result property="result"    column="result"    />
+        <result property="mesId"    column="mes_id"    />
+        <result property="drawingNumber"    column="drawing_number"    />
+        <result property="boradNumber"    column="borad_number"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="tagNumber"    column="tag_number"    />
+        <result property="phenomenon"    column="phenomenon"    />
+        <result property="cause"    column="cause"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysRecordVo">
+        select record_id, user_name, nick_name, instrument_number, result, mes_id, drawing_number, borad_number, order_number, tag_number, phenomenon, cause, create_by, create_time, update_by, update_time, remark from sys_record
+    </sql>
+
+    <select id="selectSysRecordList" parameterType="SysRecord" resultMap="SysRecordResult">
+        <include refid="selectSysRecordVo"/>
+        <where>  
+            <if test="userName != null  and userName != ''"> and user_name = #{userName}</if>
+            <if test="nickName != null  and nickName != ''"> and nick_name = #{nickName}</if>
+            <if test="instrumentNumber != null  and instrumentNumber != ''"> and instrument_number like concat('%', #{instrumentNumber}, '%')</if>
+            <if test="result != null  and result != ''"> and result = #{result}</if>
+            <if test="mesId != null  and mesId != ''"> and mes_id like concat('%', #{mesId}, '%')</if>
+            <if test="drawingNumber != null  and drawingNumber != ''"> and drawing_number like concat('%', #{drawingNumber}, '%')</if>
+            <if test="boradNumber != null  and boradNumber != ''"> and borad_number like concat('%', #{boradNumber}, '%')</if>
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number like concat('%', #{orderNumber}, '%')</if>
+            <if test="tagNumber != null  and tagNumber != ''"> and tag_number = #{tagNumber}</if>
+            <if test="phenomenon != null  and phenomenon != ''"> and phenomenon like concat('%', #{phenomenon}, '%')</if>
+            <if test="cause != null  and cause != ''"> and cause like concat('%', #{cause}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSysRecordByRecordId" parameterType="Long" resultMap="SysRecordResult">
+        <include refid="selectSysRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+        
+    <insert id="insertSysRecord" parameterType="SysRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into sys_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">user_name,</if>
+            <if test="nickName != null">nick_name,</if>
+            <if test="instrumentNumber != null">instrument_number,</if>
+            <if test="result != null">result,</if>
+            <if test="mesId != null">mes_id,</if>
+            <if test="drawingNumber != null">drawing_number,</if>
+            <if test="boradNumber != null">borad_number,</if>
+            <if test="orderNumber != null">order_number,</if>
+            <if test="tagNumber != null">tag_number,</if>
+            <if test="phenomenon != null">phenomenon,</if>
+            <if test="cause != null">cause,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">#{userName},</if>
+            <if test="nickName != null">#{nickName},</if>
+            <if test="instrumentNumber != null">#{instrumentNumber},</if>
+            <if test="result != null">#{result},</if>
+            <if test="mesId != null">#{mesId},</if>
+            <if test="drawingNumber != null">#{drawingNumber},</if>
+            <if test="boradNumber != null">#{boradNumber},</if>
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="tagNumber != null">#{tagNumber},</if>
+            <if test="phenomenon != null">#{phenomenon},</if>
+            <if test="cause != null">#{cause},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysRecord" parameterType="SysRecord">
+        update sys_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
+            <if test="instrumentNumber != null">instrument_number = #{instrumentNumber},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="mesId != null">mes_id = #{mesId},</if>
+            <if test="drawingNumber != null">drawing_number = #{drawingNumber},</if>
+            <if test="boradNumber != null">borad_number = #{boradNumber},</if>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="tagNumber != null">tag_number = #{tagNumber},</if>
+            <if test="phenomenon != null">phenomenon = #{phenomenon},</if>
+            <if test="cause != null">cause = #{cause},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteSysRecordByRecordId" parameterType="Long">
+        delete from sys_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteSysRecordByRecordIds" parameterType="String">
+        delete from sys_record where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>
