@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="nickName != null  and nickName != ''"> and nick_name = #{nickName}</if>
             <if test="instrumentNumber != null  and instrumentNumber != ''"> and instrument_number like concat('%', #{instrumentNumber}, '%')</if>
             <if test="result != null  and result != ''"> and result = #{result}</if>
-            <if test="mesId != null  and mesId != ''"> and mes_id like concat('%', #{mesId}, '%')</if>
+            <if test="mesId != null  and mesId != ''"> and mes_id = #{mesId} </if>
             <if test="drawingNumber != null  and drawingNumber != ''"> and drawing_number like concat('%', #{drawingNumber}, '%')</if>
             <if test="boradNumber != null  and boradNumber != ''"> and borad_number like concat('%', #{boradNumber}, '%')</if>
             <if test="orderNumber != null  and orderNumber != ''"> and order_number like concat('%', #{orderNumber}, '%')</if>
@@ -110,7 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="remark != null">remark = #{remark},</if>
         </trim>
-        where record_id = #{recordId}
+        where mes_id = #{mesId}
     </update>
 
     <delete id="deleteSysRecordByRecordId" parameterType="Long">
@@ -123,4 +123,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{recordId}
         </foreach>
     </delete>
+
+    <select id="checkMesidUnique" parameterType="String" resultMap="SysRecordResult">
+        <include refid="selectSysRecordVo"/>
+        where mes_id=#{mesId}  limit 1
+    </select>
 </mapper>

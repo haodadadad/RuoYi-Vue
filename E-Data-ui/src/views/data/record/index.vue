@@ -29,7 +29,7 @@
       <el-form-item label="MES码" prop="mesId">
         <el-input
           v-model="queryParams.mesId"
-          placeholder="请输入MES码"
+          placeholder="请扫描MES码"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -145,7 +145,6 @@
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="记录ID" align="center" prop="recordId" />
-      <el-table-column label="用户工号" align="center" prop="userName" />
       <el-table-column label="用户姓名" align="center" prop="nickName" />
       <el-table-column label="仪表序列号" align="center" prop="instrumentNumber" />
       <el-table-column label="检测结果" align="center" prop="result">
@@ -153,7 +152,7 @@
           <dict-tag :options="dict.type.sys_test_result" :value="scope.row.result"/>
         </template>
       </el-table-column>
-      <el-table-column label="MES码" align="center" prop="mesId" />
+
       <el-table-column label="图号" align="center" prop="drawingNumber" />
       <el-table-column label="板号" align="center" prop="boradNumber" />
       <el-table-column label="订单号" align="center" prop="orderNumber" />

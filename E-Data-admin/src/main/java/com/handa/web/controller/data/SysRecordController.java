@@ -2,8 +2,11 @@ package com.handa.web.controller.data;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.handa.common.constant.UserConstants;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -75,8 +78,11 @@ public class SysRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('data:record:add')")
     @Log(title = "记录查询", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SysRecord sysRecord)
+    public AjaxResult add(@Validated @RequestBody SysRecord sysRecord)
     {
+        if(UserConstants.NOT_UNIQUE.equals(sysRecordService.checkMesidUnique(sysRecord))){
+            return AjaxResult.error("MES码已扫码，请到记录列表查询");
+        }
         return toAjax(sysRecordService.insertSysRecord(sysRecord));
     }
 

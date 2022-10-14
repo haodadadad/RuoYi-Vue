@@ -1,7 +1,11 @@
 package com.handa.system.service.impl;
 
 import java.util.List;
+
+import com.handa.common.constant.UserConstants;
+import com.handa.common.core.domain.entity.SysUser;
 import com.handa.common.utils.DateUtils;
+import com.handa.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.handa.system.mapper.SysRecordMapper;
@@ -92,5 +96,21 @@ public class SysRecordServiceImpl implements ISysRecordService
     public int deleteSysRecordByRecordId(Long recordId)
     {
         return sysRecordMapper.deleteSysRecordByRecordId(recordId);
+    }
+    /**
+     * 校验MES ID是否唯一
+     *
+     * @param sysRecord 记录信息
+     * @return
+     */
+    @Override
+    public String checkMesidUnique(SysRecord sysRecord) {
+        Long recordId = StringUtils.isNull(sysRecord.getRecordId()) ? -1L : sysRecord.getRecordId();
+        SysRecord info =sysRecordMapper.checkMesidUnique(sysRecord.getMesId());
+        if (StringUtils.isNotNull(info) && info.getRecordId().longValue() != recordId.longValue())
+        {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
     }
 }

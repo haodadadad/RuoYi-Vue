@@ -58,4 +58,13 @@ public interface ISysRecordService
      * @return 结果
      */
     public int deleteSysRecordByRecordId(Long recordId);
+
+
+    /**
+     * 校验Mesid是否唯一
+     *
+     * @param sysRecord 记录信息
+     * @return 结果
+     */
+    public String checkMesidUnique(SysRecord sysRecord);
 }

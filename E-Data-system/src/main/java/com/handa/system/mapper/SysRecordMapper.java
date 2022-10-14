@@ -1,6 +1,8 @@
 package com.handa.system.mapper;
 
 import java.util.List;
+
+
 import com.handa.system.domain.SysRecord;
 
 /**
@@ -58,4 +60,13 @@ public interface SysRecordMapper
      * @return 结果
      */
     public int deleteSysRecordByRecordIds(Long[] recordIds);
+
+    /**
+     * 校验Mesid是否唯一
+     *
+     * @param mesId 用户名称
+     * @return 结果
+     */
+    public SysRecord checkMesidUnique(String mesId);
+
 }

@@ -5,6 +5,7 @@
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>欢迎登录数据电子化管理系统</h2>
         <h2>{{user.nickName}}</h2>
+        <h2>{{user.userName}}</h2>
         <p>
           这是首页         包含对数据的记录
           人员管理
@@ -41,11 +42,10 @@ export default {
     return {
       // 版本号
       version: "1.0.0",
+      username:"",
 
       user: {},
-      roleGroup: {},
-      postGroup: {},
-      activeTab: "userinfo"
+
     };
   },
 
@@ -57,8 +57,9 @@ export default {
     getUser() {
       getUserProfile().then(response => {
         this.user = response.data;
-        this.roleGroup = response.roleGroup;
-        this.postGroup = response.postGroup;
+        const username = response.data.userName
+
+        console.log("123456",username)
       });
     },
 
