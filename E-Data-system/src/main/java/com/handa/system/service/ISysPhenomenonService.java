@@ -58,4 +58,6 @@ public interface ISysPhenomenonService
      * @return 结果
      */
     public int deleteSysPhenomenonByPhenomenonId(Long phenomenonId);
+
+    public List<SysPhenomenon> selectSysPhenomenonByDrawingNumber(String drawingNumber);
 }

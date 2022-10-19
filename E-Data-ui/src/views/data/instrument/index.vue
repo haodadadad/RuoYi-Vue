@@ -80,8 +80,8 @@
     <el-table v-loading="loading" :data="instrumentList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="instrumentId" />
-      <el-table-column label="仪器序列号" align="center" prop="instrumentNumber" />
-      <el-table-column label="仪器名称" align="center" prop="instrumentName" />
+      <el-table-column label="仪器序列号" align="left" prop="instrumentNumber" />
+      <el-table-column label="仪器名称" align="left" prop="instrumentName" />
       <el-table-column label="仪器型号" align="center" prop="instrumentModel" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

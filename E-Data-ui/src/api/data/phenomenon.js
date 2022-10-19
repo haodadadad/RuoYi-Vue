@@ -16,6 +16,13 @@ export function getPhenomenon(phenomenonId) {
     method: 'get'
   })
 }
+// 跟据图号查询故障信息详细
+export function getPhenomenonInfo(drawingNumber) {
+  return request({
+    url: '/data/phenomenon/drawingNumber/' + drawingNumber,
+    method: 'get'
+  })
+}
 
 // 新增故障信息
 export function addPhenomenon(data) {

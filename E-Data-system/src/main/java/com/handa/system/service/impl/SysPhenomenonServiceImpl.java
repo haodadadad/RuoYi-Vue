@@ -90,4 +90,14 @@ public class SysPhenomenonServiceImpl implements ISysPhenomenonService
     {
         return sysPhenomenonMapper.deleteSysPhenomenonByPhenomenonId(phenomenonId);
     }
+    /**
+     * 根骨图号故障信息信息
+     *
+     * @param drawingNumber 故障信息主键
+     * @return 结果
+     */
+    @Override
+    public List<SysPhenomenon> selectSysPhenomenonByDrawingNumber(String drawingNumber) {
+        return sysPhenomenonMapper.selectSysPhenomenonByDrawingNumber(drawingNumber);
+    }
 }

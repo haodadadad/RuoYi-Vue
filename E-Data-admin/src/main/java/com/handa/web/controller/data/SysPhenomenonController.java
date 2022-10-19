@@ -70,6 +70,16 @@ public class SysPhenomenonController extends BaseController
     }
 
     /**
+     * 跟据图号获取故障信息详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('data:phenomenon:query')")
+    @GetMapping(value = "/drawingNumber/{drawingNumber}")
+    public AjaxResult getPhenomenonByDarwingNumber(@PathVariable("drawingNumber") String drawingNumber)
+    {
+        return AjaxResult.success(sysPhenomenonService.selectSysPhenomenonByDrawingNumber(drawingNumber));
+    }
+
+    /**
      * 新增故障信息
      */
     @PreAuthorize("@ss.hasPermi('data:phenomenon:add')")

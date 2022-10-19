@@ -26,6 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSysPhenomenonVo"/>
         where phenomenon_id = #{phenomenonId}
     </select>
+
+    <select id="selectSysPhenomenonByDrawingNumber" parameterType="String" resultMap="SysPhenomenonResult">
+        <include refid="selectSysPhenomenonVo"/>
+        where drawing_number = #{drawingNumber}
+    </select>
         
     <insert id="insertSysPhenomenon" parameterType="SysPhenomenon" useGeneratedKeys="true" keyProperty="phenomenonId">
         insert into sys_phenomenon

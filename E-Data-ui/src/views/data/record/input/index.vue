@@ -43,7 +43,7 @@
       <el-form-item :rules="rules.result" prop="result" label="测试结果">
         <el-radio-group v-model="model.result" text-color="#ffffff" fill="#409EFF" :class="['111']">
           <el-radio v-for="(item, $index) in result_data" :key="item.value" :label="item.value" :border="!!item.border"
-                    :disabled="!!item.disabled">{{ item.label }}
+                    :disabled="!!item.disabled" @change="unqualified">{{ item.label }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -54,11 +54,20 @@
         <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
           <el-form-item :rules="rules.phenomenon" prop="phenomenon" label="故障现象">
             <el-select v-model="model.phenomenon" placeholder="请选择" :style="{width: '100%'}">
-              <el-option-group v-for="(group, $groupIndex) in phenomenon_data" :key="group.label" :label="group.label"
-                               :disabled="!!group.disabled">
-                <el-option v-for="(item, $index) in (group.data || [])" :key="item.value" :label="item.label"
-                           :value="item.value" :disabled="!!item.disabled"></el-option>
-              </el-option-group>
+              <el-option
+                v-for="item in phenomenonOptions"
+                :key="item.phenomenon"
+                :label="item.phenomenon"
+                :value="item.phenomenon"
+                :disabled="!!item.disabled"
+              ></el-option>
+
+
+              <!--              <el-option-group v-for="(group, $groupIndex) in phenomenon_data" :key="group.label" :label="group.label"-->
+              <!--                               :disabled="!!group.disabled">-->
+              <!--                <el-option v-for="(item, $index) in (group.data || [])" :key="item.value" :label="item.label"-->
+              <!--                           :value="item.value" :disabled="!!item.disabled"></el-option>-->
+              <!--              </el-option-group>-->
             </el-select>
           </el-form-item>
         </el-col>
@@ -84,7 +93,7 @@
             v-show="!isShowFirst"
             @onChange="onChange2"
             @onKeyPress="onKeyPress2"
-            keyboardClass="myBaseClass2" />
+            keyboardClass="myBaseClass2"/>
         </div>
 
       </el-row>
@@ -101,7 +110,7 @@
   </div>
 </template>
 <script>
-// import JElSelectTree from "./JElSelectTree";
+import {getPhenomenonInfo} from "@/api/data/phenomenon";
 
 import {getUserProfile} from "@/api/system/user";
 import {listRecord, getRecord, delRecord, addRecord, updateRecord} from "@/api/data/record";
@@ -126,6 +135,8 @@ export default {
         instrumentNumber: '',
         result: '0',
         phenomenon: '',
+        //故障现象选项
+        phenomenonOptions: [],
         cause: '',
         tagNumber: '',
         drawingNumber: '',
@@ -133,10 +144,10 @@ export default {
         ordernum: '',
         orderNumber: '',
 
-        password:undefined,
-        password2:undefined,
-        isShowFirst:true,
-        layout:{
+        password: undefined,
+        password2: undefined,
+        isShowFirst: true,
+        layout: {
           'default': [
             "1 2 3 4",
             "5 6 7 8",
@@ -351,15 +362,18 @@ export default {
         this.model.userName = this.user.userName
       });
     },
-    /** 查询记录查询列表 */
+
+    unqualified: function (val) {
+      if (val == 1) {
+        getPhenomenonInfo(this.model.drawingNumber).then(response => {
+          this.phenomenonOptions = response.data;
+
+        });
+        console.log("点击了不合格", this.model.drawingNumber)
+      }
+    },
 
 
-    showDialog(){
-      this.isShowFirst = true;
-    },
-    showDialog2(){
-      this.isShowFirst = false;
-    },
     onChange2(input) {
       // input 是当前点击按钮的值
       console.log(input)

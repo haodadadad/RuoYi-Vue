@@ -1,6 +1,8 @@
 package com.handa.system.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.handa.system.domain.SysPhenomenon;
 
 /**
@@ -9,7 +11,7 @@ import com.handa.system.domain.SysPhenomenon;
  * @author ruoyi
  * @date 2022-10-10
  */
-public interface SysPhenomenonMapper 
+public interface SysPhenomenonMapper extends BaseMapper<SysPhenomenon>
 {
     /**
      * 查询故障信息
@@ -58,4 +60,6 @@ public interface SysPhenomenonMapper
      * @return 结果
      */
     public int deleteSysPhenomenonByPhenomenonIds(Long[] phenomenonIds);
+
+    public List<SysPhenomenon> selectSysPhenomenonByDrawingNumber(String drawingNumber);
 }

@@ -19,17 +19,29 @@
       </el-form-item>
 
       <el-form-item label="检测结果" prop="result">
-        <el-input
-          v-model="queryParams.result"
-          placeholder="请输入检测结果"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+        <!--        <el-input-->
+        <!--          v-model="queryParams.result"-->
+        <!--          placeholder="请输入检测结果"-->
+        <!--          clearable-->
+        <!--          @keyup.enter.native="handleQuery"-->
+        <!--        />-->
+
+        <el-select v-model="queryParams.result" placeholder="请选择检测结果">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="MES码" prop="mesId">
+
+
+      <el-form-item label="图号" prop="drawingNumber">
         <el-input
-          v-model="queryParams.mesId"
-          placeholder="请扫描MES码"
+          v-model="queryParams.drawingNumber"
+          placeholder="请输入图号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -42,14 +54,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="图号" prop="drawingNumber">
-        <el-input
-          v-model="queryParams.drawingNumber"
-          placeholder="请输入图号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="板号" prop="boradNumber">
         <el-input
           v-model="queryParams.boradNumber"
@@ -58,10 +62,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="订单号" prop="orderNumber">
+      <el-form-item label="任务号" prop="orderNumber">
         <el-input
           v-model="queryParams.orderNumber"
-          placeholder="请输入订单号"
+          placeholder="请输入任务号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -89,6 +93,22 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item><el-form-item label="备注" prop="remark">
+        <el-input
+          v-model="queryParams.remark"
+          placeholder="请输入备注"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="MES码" prop="mesId">
+        <el-input
+          v-model="queryParams.mesId"
+          placeholder="请扫描MES码"
+          clearable
+          @keyup.enter.native="handleQuery"
+
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -105,7 +125,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['data:record:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -116,7 +137,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['data:record:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -127,7 +149,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['data:record:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -137,29 +160,32 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['data:record:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="记录ID" align="center" prop="recordId" />
-      <el-table-column label="用户姓名" align="center" prop="nickName" />
-      <el-table-column label="仪表序列号" align="center" prop="instrumentNumber" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="序号" align="center" prop="recordId"/>
+      <el-table-column label="用户姓名" align="center" prop="nickName"/>
+
+
+      <el-table-column label="任务号" align="center" prop="orderNumber"/>
+      <el-table-column label="图号" align="center" prop="drawingNumber"/>
+      <el-table-column label="板号" align="center" prop="boradNumber"/>
       <el-table-column label="检测结果" align="center" prop="result">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_test_result" :value="scope.row.result"/>
         </template>
       </el-table-column>
 
-      <el-table-column label="图号" align="center" prop="drawingNumber" />
-      <el-table-column label="板号" align="center" prop="boradNumber" />
-      <el-table-column label="订单号" align="center" prop="orderNumber" />
-      <el-table-column label="位号" align="center" prop="tagNumber" />
-      <el-table-column label="故障现象" align="center" prop="phenomenon" />
-      <el-table-column label="故障原因" align="center" prop="cause" />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="故障现象" align="center" prop="phenomenon"/>
+      <el-table-column label="故障原因" align="center" prop="cause"/>
+      <el-table-column label="位号" align="center" prop="tagNumber"/>
+      <el-table-column label="仪表序列号" align="center" prop="instrumentNumber"/>
+      <el-table-column label="备注" align="center" prop="remark"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -168,14 +194,16 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['data:record:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['data:record:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -192,40 +220,49 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="用户工号" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入用户工号" />
+          <el-input v-model="form.userName" placeholder="请输入用户工号"/>
         </el-form-item>
         <el-form-item label="用户姓名" prop="nickName">
-          <el-input v-model="form.nickName" placeholder="请输入用户姓名" />
+          <el-input v-model="form.nickName" placeholder="请输入用户姓名"/>
         </el-form-item>
         <el-form-item label="仪表序列号" prop="instrumentNumber">
-          <el-input v-model="form.instrumentNumber" placeholder="请输入仪表序列号" />
+          <el-input v-model="form.instrumentNumber" placeholder="请输入仪表序列号"/>
         </el-form-item>
         <el-form-item label="检测结果" prop="result">
-          <el-input v-model="form.result" placeholder="请输入检测结果" />
+          <!--          <el-input v-model="form.result" placeholder="请输入检测结果" />-->
+          <el-select v-model="form.result" placeholder="请选择检测结果" @change="repair">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="MES码" prop="mesId">
-          <el-input v-model="form.mesId" placeholder="请输入MES码" />
+          <el-input v-model="form.mesId" placeholder="请输入MES码"/>
         </el-form-item>
         <el-form-item label="图号" prop="drawingNumber">
-          <el-input v-model="form.drawingNumber" placeholder="请输入图号" />
+          <el-input v-model="form.drawingNumber" placeholder="请输入图号"/>
         </el-form-item>
         <el-form-item label="板号" prop="boradNumber">
-          <el-input v-model="form.boradNumber" placeholder="请输入板号" />
+          <el-input v-model="form.boradNumber" placeholder="请输入板号"/>
         </el-form-item>
         <el-form-item label="订单号" prop="orderNumber">
-          <el-input v-model="form.orderNumber" placeholder="请输入订单号" />
+          <el-input v-model="form.orderNumber" placeholder="请输入订单号"/>
         </el-form-item>
         <el-form-item label="位号" prop="tagNumber">
-          <el-input v-model="form.tagNumber" placeholder="请输入位号" />
+          <el-input v-model="form.tagNumber" placeholder="请输入位号"/>
         </el-form-item>
         <el-form-item label="故障现象" prop="phenomenon">
-          <el-input v-model="form.phenomenon" placeholder="请输入故障现象" />
+          <el-input v-model="form.phenomenon" placeholder="请输入故障现象"/>
         </el-form-item>
         <el-form-item label="故障原因" prop="cause">
-          <el-input v-model="form.cause" placeholder="请输入故障原因" />
+          <el-input v-model="form.cause" placeholder="请输入故障原因"/>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -237,7 +274,8 @@
 </template>
 
 <script>
-import { listRecord, getRecord, delRecord, addRecord, updateRecord } from "@/api/data/record";
+import {listRecord, getRecord, delRecord, addRecord, updateRecord} from "@/api/data/record";
+import {getPhenomenonInfo} from "@/api/data/phenomenon";
 
 export default {
   name: "Record",
@@ -277,12 +315,19 @@ export default {
         tagNumber: null,
         phenomenon: null,
         cause: null,
+        remark: null,
       },
       // 表单参数
       form: {},
+      options: [{
+        value: '0',
+        label: '合格'
+      }, {
+        value: '1',
+        label: '不合格'
+      }],
       // 表单校验
-      rules: {
-      }
+      rules: {}
     };
   },
   created() {
@@ -296,7 +341,7 @@ export default {
         this.recordList = response.rows;
         this.total = response.total;
         this.loading = false;
-      //  console.log("123321",this.recordList)
+        //  console.log("123321",this.recordList)
       });
     },
     // 取消按钮
@@ -327,6 +372,12 @@ export default {
       };
       this.resetForm("form");
     },
+    repair: function (val) {
+      if (val == 0) {
+        this.form.remark = "已修复"
+       // console.log("点击了合格", this.form.result)
+      }
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -340,7 +391,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.recordId)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -382,12 +433,13 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const recordIds = row.recordId || this.ids;
-      this.$modal.confirm('是否确认删除记录查询编号为"' + recordIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除记录查询编号为"' + recordIds + '"的数据项？').then(function () {
         return delRecord(recordIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
