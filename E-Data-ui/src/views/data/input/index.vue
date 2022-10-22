@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form ref="$form" :model="model" label-position="left" label-width="100px" size="small">
-      <el-form-item :rules="rules.mesId" prop="mesId" label="MES码">
-        <el-input v-model="model.mesId" placeholder="请扫描二维码" @keyup.enter.native="submitCode" autofocus clearable
+      <el-form-item :rules="rules.mesId" prop="mesId" label="MES码"   >
+        <el-input v-model="model.mesIdInput" placeholder="请扫描二维码" @keyup.enter.native="submitCode" autofocus clearable
                   ref="input"
                   prefix-icon="el-icon-camera"></el-input>
       </el-form-item>
@@ -19,8 +19,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-          <el-form-item :rules="rules.boradNumber" prop="boradNumber" label="板号">
-            <el-input v-model="model.boradNumber" placeholder="板号" readonly clearable></el-input>
+          <el-form-item :rules="rules.boardNumber" prop="boardNumber" label="板号">
+            <el-input v-model="model.boardNumber" placeholder="板号" readonly clearable></el-input>
           </el-form-item>
         </el-col>
 
@@ -60,6 +60,7 @@
                 :label="item.phenomenon"
                 :value="item.phenomenon"
                 :disabled="!!item.disabled"
+
               ></el-option>
 
 
@@ -119,7 +120,7 @@ import SimpleKeyboard from "@/components/keyboard/keyboard"
 import user from "@/store/modules/user";
 
 export default {
-  name: "form",
+  name: "Input",
   components: {
     // JElSelectTree,
     SimpleKeyboard
@@ -130,6 +131,7 @@ export default {
       forms: ['$form'],
       model: {
         mesId: '',
+        mesIdInput:'',
         nickName: '',
         userName: '',
         instrumentNumber: '',
@@ -140,9 +142,11 @@ export default {
         cause: '',
         tagNumber: '',
         drawingNumber: '',
-        boradNumber: '',
+        boardNumber: '',
         ordernum: '',
         orderNumber: '',
+        remark: null,
+
 
         password: undefined,
         password2: undefined,
@@ -157,16 +161,25 @@ export default {
 
       },
       rules: {
-        mesId: [{
-          required: true,
-          message: 'MES码不能为空',
-          trigger: 'blur'
-        }],
+        mesId: [],
+        mesIdInput: [],
         nickName: [],
         userName: [],
-        drawingNumber: [],
-        boradNumber: [],
-        orderNumber: [],
+        drawingNumber: [{
+          required: true,
+          message: '图号不能为空',
+          trigger: 'blur'
+        }],
+        boardNumber: [{
+          required: true,
+          message: '板号不能为空',
+          trigger: 'blur'
+        }],
+        orderNumber: [{
+          required: true,
+          message: '任务号不能为空',
+          trigger: 'blur'
+        }],
         instrumentNumber: [{
           required: true,
           message: '仪表码不能为空',
@@ -193,59 +206,7 @@ export default {
         disabled: false,
         border: false
       }],
-      phenomenon_data: [{
-        label: '',
-        disabled: false,
-        data: [{
-          label: '有源滤波器76.3kHz信号无输出',
-          value: '有源滤波器76.3kHz信号无输出',
-          disabled: false
-        }, {
-          label: '解调器电路3.5dB增益调不上去',
-          value: '解调器电路3.5dB增益调不上去',
-          disabled: false
-        }, {
-          label: '解调器电路方波无输出',
-          value: '解调器电路方波无输出',
-          disabled: false
-        }, {
-          label: '微机复位信号无',
-          value: '微机复位信号无',
-          disabled: false
-        }, {
-          label: '微机应答信号无',
-          value: '微机应答信号无',
-          disabled: false
-        }, {
-          label: '阻抗不可调',
-          value: '阻抗不可调',
-          disabled: false
-        }, {
-          label: '相位不可调',
-          value: '相位不可调',
-          disabled: false
-        }, {
-          label: '功率监测波形异常',
-          value: '功率监测波形异常',
-          disabled: false
-        }, {
-          label: '电压驻波比波形异常',
-          value: '电压驻波比波形异常',
-          disabled: false
-        }, {
-          label: '驻波比报警波形异常',
-          value: '驻波比报警波形异常',
-          disabled: false
-        }, {
-          label: '保护电路异常',
-          value: '保护电路异常',
-          disabled: false
-        }, {
-          label: '其它',
-          value: '其它',
-          disabled: false
-        }]
-      }],
+
       cause_data: [{
         label: '缺焊',
         value: '缺焊',
@@ -288,23 +249,27 @@ export default {
   methods: {
     reset() {
       this.model.mesId = ""
+      this.model.mesIdInput = ""
       this.model.phenomenon = ""
       this.model.cause = ""
       this.model.tagNumber = ""
       this.model.result = "0"
       this.model.drawingNumber = ''
-      this.model.boradNumber = ''
+      this.model.boardNumber = ''
       this.model.ordernum = ''
       this.model.orderNumber = ''
 
+
     },
     sliptmesId() {
+      this.model.mesId=this.model.mesIdInput
       let strArr = this.model.mesId
       const arr = strArr.split('|', 6)
       this.model.drawingNumber = arr[1]
-      this.model.boradNumber = arr[3]
+      this.model.boardNumber = arr[3]
       this.model.ordernum = arr[0]
       this.model.orderNumber = arr[4]
+      this.model.mesIdInput=''
 
     }, sliptinstrumentNumber() {
 
@@ -321,8 +286,6 @@ export default {
 
     submitCode() {
       this.sliptmesId()
-
-
       addRecord(this.model).then(res => {
         if (res) {
           this.$message.success("MES码扫描成功")
@@ -333,12 +296,33 @@ export default {
       })
 
     },
+
+    repair(){
+      let strtagNumber =this.model.tagNumber
+      let strcause=this.model.cause
+      let strphenomenon=this.model.phenomenon
+
+      if(this.model.result==='1'){
+        if(Object.keys(strcause).length === 0 || Object.keys(strtagNumber).length === 0 ||Object.keys(strphenomenon).length === 0){
+          console.log(Object.keys(strcause).length);
+          console.log(Object.keys(strtagNumber).length);
+          console.log(Object.keys(strphenomenon).length);
+          this.model.result='1'
+        }else {
+          this.model.result='0'
+          this.model.remark='已修复'
+        }
+      }
+
+
+    },
     submitForm() {
       Promise.all(this.forms.map(form => this.$refs[form].validate()))
         .then(() => {
           this.submit_loading = true;
           // TODO demo
           this.sliptinstrumentNumber()
+          this.repair()
           updateRecord(this.model).then(response => {
             this.$message.success("保存成功")
             //除仪表码其他数据清空
@@ -367,9 +351,11 @@ export default {
       if (val == 1) {
         getPhenomenonInfo(this.model.drawingNumber).then(response => {
           this.phenomenonOptions = response.data;
+          this.$forceUpdate()  //强制更新下拉数据
 
         });
         console.log("点击了不合格", this.model.drawingNumber)
+
       }
     },
 

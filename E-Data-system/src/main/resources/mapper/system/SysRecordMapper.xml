@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="result"    column="result"    />
         <result property="mesId"    column="mes_id"    />
         <result property="drawingNumber"    column="drawing_number"    />
-        <result property="boradNumber"    column="borad_number"    />
+        <result property="boardNumber"    column="board_number"    />
         <result property="orderNumber"    column="order_number"    />
         <result property="tagNumber"    column="tag_number"    />
         <result property="phenomenon"    column="phenomenon"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSysRecordVo">
-        select record_id, user_name, nick_name, instrument_number, result, mes_id, drawing_number, borad_number, order_number, tag_number, phenomenon, cause, create_by, create_time, update_by, update_time, remark from sys_record
+        select record_id, user_name, nick_name, instrument_number, result, mes_id, drawing_number, board_number, order_number, tag_number, phenomenon, cause, create_by, create_time, update_by, update_time, remark from sys_record
     </sql>
 
     <select id="selectSysRecordList" parameterType="SysRecord" resultMap="SysRecordResult">
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="result != null  and result != ''"> and result = #{result}</if>
             <if test="mesId != null  and mesId != ''"> and mes_id = #{mesId} </if>
             <if test="drawingNumber != null  and drawingNumber != ''"> and drawing_number like concat('%', #{drawingNumber}, '%')</if>
-            <if test="boradNumber != null  and boradNumber != ''"> and borad_number like concat('%', #{boradNumber}, '%')</if>
+            <if test="boardNumber != null  and boardNumber != ''"> and board_number like concat('%', #{boardNumber}, '%')</if>
             <if test="orderNumber != null  and orderNumber != ''"> and order_number like concat('%', #{orderNumber}, '%')</if>
             <if test="tagNumber != null  and tagNumber != ''"> and tag_number = #{tagNumber}</if>
             <if test="phenomenon != null  and phenomenon != ''"> and phenomenon like concat('%', #{phenomenon}, '%')</if>
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="result != null">result,</if>
             <if test="mesId != null">mes_id,</if>
             <if test="drawingNumber != null">drawing_number,</if>
-            <if test="boradNumber != null">borad_number,</if>
+            <if test="boardNumber != null">board_number,</if>
             <if test="orderNumber != null">order_number,</if>
             <if test="tagNumber != null">tag_number,</if>
             <if test="phenomenon != null">phenomenon,</if>
@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="result != null">#{result},</if>
             <if test="mesId != null">#{mesId},</if>
             <if test="drawingNumber != null">#{drawingNumber},</if>
-            <if test="boradNumber != null">#{boradNumber},</if>
+            <if test="boardNumber != null">#{boardNumber},</if>
             <if test="orderNumber != null">#{orderNumber},</if>
             <if test="tagNumber != null">#{tagNumber},</if>
             <if test="phenomenon != null">#{phenomenon},</if>
@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="result != null">result = #{result},</if>
             <if test="mesId != null">mes_id = #{mesId},</if>
             <if test="drawingNumber != null">drawing_number = #{drawingNumber},</if>
-            <if test="boradNumber != null">borad_number = #{boradNumber},</if>
+            <if test="boardNumber != null">board_number = #{boardNumber},</if>
             <if test="orderNumber != null">order_number = #{orderNumber},</if>
             <if test="tagNumber != null">tag_number = #{tagNumber},</if>
             <if test="phenomenon != null">phenomenon = #{phenomenon},</if>

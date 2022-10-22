@@ -3,10 +3,12 @@
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="仪器序列号" prop="instrumentNumber" label-width=90px>
         <el-input
+          onkeyup="this.value = this.value.toUpperCase()"
           v-model="queryParams.instrumentNumber"
           placeholder="请输入仪器序列号"
           clearable
           @keyup.enter.native="handleQuery"
+
         />
       </el-form-item>
       <el-form-item label="仪器名称" prop="instrumentName">

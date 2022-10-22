@@ -1,6 +1,30 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="任务号" prop="orderNumber">
+        <el-input
+          v-model="queryParams.orderNumber"
+          placeholder="请输入任务号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="图号" prop="drawingNumber">
+        <el-input
+          v-model="queryParams.drawingNumber"
+          placeholder="请输入图号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="板号" prop="boardNumber">
+        <el-input
+          v-model="queryParams.boardNumber"
+          placeholder="请输入板号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="用户工号" prop="userName">
         <el-input
           v-model="queryParams.userName"
@@ -38,46 +62,6 @@
       </el-form-item>
 
 
-      <el-form-item label="图号" prop="drawingNumber">
-        <el-input
-          v-model="queryParams.drawingNumber"
-          placeholder="请输入图号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="仪表序列号" prop="instrumentNumber" label-width=90px>
-        <el-input
-          v-model="queryParams.instrumentNumber"
-          placeholder="请输入仪表序列号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="板号" prop="boradNumber">
-        <el-input
-          v-model="queryParams.boradNumber"
-          placeholder="请输入板号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="任务号" prop="orderNumber">
-        <el-input
-          v-model="queryParams.orderNumber"
-          placeholder="请输入任务号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="位号" prop="tagNumber">
-        <el-input
-          v-model="queryParams.tagNumber"
-          placeholder="请输入位号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="故障现象" prop="phenomenon">
         <el-input
           v-model="queryParams.phenomenon"
@@ -93,10 +77,20 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item><el-form-item label="备注" prop="remark">
+      </el-form-item>
+
+      <el-form-item label="位号" prop="tagNumber">
         <el-input
-          v-model="queryParams.remark"
-          placeholder="请输入备注"
+          v-model="queryParams.tagNumber"
+          placeholder="请输入位号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="仪表序列号" prop="instrumentNumber" label-width=85px>
+        <el-input
+          v-model="queryParams.instrumentNumber"
+          placeholder="请输入仪表序列号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -110,6 +104,15 @@
 
         />
       </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input
+          v-model="queryParams.remark"
+          placeholder="请输入备注"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -168,13 +171,13 @@
 
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="序号" align="center" prop="recordId"/>
-      <el-table-column label="用户姓名" align="center" prop="nickName"/>
+
+
 
 
       <el-table-column label="任务号" align="center" prop="orderNumber"/>
       <el-table-column label="图号" align="center" prop="drawingNumber"/>
-      <el-table-column label="板号" align="center" prop="boradNumber"/>
+      <el-table-column label="板号" align="center" prop="boardNumber"/>
       <el-table-column label="检测结果" align="center" prop="result">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_test_result" :value="scope.row.result"/>
@@ -185,6 +188,13 @@
       <el-table-column label="故障原因" align="center" prop="cause"/>
       <el-table-column label="位号" align="center" prop="tagNumber"/>
       <el-table-column label="仪表序列号" align="center" prop="instrumentNumber"/>
+      <el-table-column label="用户姓名" align="center" prop="nickName"/>
+      <el-table-column label="时间" align="center" prop="createTime" >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} ') }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="备注" align="center" prop="remark"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -236,7 +246,7 @@
               :key="item.value"
               :label="item.label"
               :value="item.value"
-              >
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -246,8 +256,8 @@
         <el-form-item label="图号" prop="drawingNumber">
           <el-input v-model="form.drawingNumber" placeholder="请输入图号"/>
         </el-form-item>
-        <el-form-item label="板号" prop="boradNumber">
-          <el-input v-model="form.boradNumber" placeholder="请输入板号"/>
+        <el-form-item label="板号" prop="boardNumber">
+          <el-input v-model="form.boardNumber" placeholder="请输入板号"/>
         </el-form-item>
         <el-form-item label="订单号" prop="orderNumber">
           <el-input v-model="form.orderNumber" placeholder="请输入订单号"/>
@@ -310,7 +320,7 @@ export default {
         result: null,
         mesId: null,
         drawingNumber: null,
-        boradNumber: null,
+        boardNumber: null,
         orderNumber: null,
         tagNumber: null,
         phenomenon: null,
@@ -359,7 +369,7 @@ export default {
         result: null,
         mesId: null,
         drawingNumber: null,
-        boradNumber: null,
+        boardNumber: null,
         orderNumber: null,
         tagNumber: null,
         phenomenon: null,
@@ -375,7 +385,7 @@ export default {
     repair: function (val) {
       if (val == 0) {
         this.form.remark = "已修复"
-       // console.log("点击了合格", this.form.result)
+        // console.log("点击了合格", this.form.result)
       }
     },
     /** 搜索按钮操作 */
