@@ -143,7 +143,6 @@ export default {
         tagNumber: '',
         drawingNumber: '',
         boardNumber: '',
-        ordernum: '',
         orderNumber: '',
         remark: null,
 

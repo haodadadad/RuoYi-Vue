@@ -79,7 +79,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="instrumentList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="instrumentList" @selection-change="handleSelectionChange" stripe style="width: 100%" border>
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="instrumentId" />
       <el-table-column label="仪器序列号" align="left" prop="instrumentNumber" />

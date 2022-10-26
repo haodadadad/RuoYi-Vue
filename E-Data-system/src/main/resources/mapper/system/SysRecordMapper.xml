@@ -44,6 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="cause != null  and cause != ''"> and cause like concat('%', #{cause}, '%')</if>
             <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
         </where>
+        order by record_id DESC
+
     </select>
     
     <select id="selectSysRecordByRecordId" parameterType="Long" resultMap="SysRecordResult">

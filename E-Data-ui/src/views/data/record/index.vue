@@ -169,34 +169,30 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange" stripe style="width: 100%" border>
       <el-table-column type="selection" width="55" align="center"/>
-
-
-
-
-      <el-table-column label="任务号" align="center" prop="orderNumber"/>
-      <el-table-column label="图号" align="center" prop="drawingNumber"/>
-      <el-table-column label="板号" align="center" prop="boardNumber"/>
-      <el-table-column label="检测结果" align="center" prop="result">
+      <el-table-column label="任务号" align="center" prop="orderNumber" width="125"/>
+      <el-table-column label="图号" align="center" prop="drawingNumber" width="125"/>
+      <el-table-column label="板号" align="center" prop="boardNumber" width="80"/>
+      <el-table-column label="检测结果" align="center" prop="result" width="75">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_test_result" :value="scope.row.result"/>
         </template>
       </el-table-column>
 
-      <el-table-column label="故障现象" align="center" prop="phenomenon"/>
-      <el-table-column label="故障原因" align="center" prop="cause"/>
-      <el-table-column label="位号" align="center" prop="tagNumber"/>
-      <el-table-column label="仪表序列号" align="center" prop="instrumentNumber"/>
-      <el-table-column label="用户姓名" align="center" prop="nickName"/>
-      <el-table-column label="时间" align="center" prop="createTime" >
+      <el-table-column label="故障现象" align="center" prop="phenomenon"min-width="100"/>
+      <el-table-column label="故障原因" align="center" prop="cause" min-width="50"/>
+      <el-table-column label="位号" align="center" prop="tagNumber" width="55"/>
+      <el-table-column label="仪表序列号" align="center" prop="instrumentNumber" min-width="50"/>
+      <el-table-column label="用户姓名" align="center" prop="nickName" width="75"/>
+      <el-table-column label="时间" align="center" prop="createTime" width="100">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} ') }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="备注" align="center" prop="remark"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="备注" align="center" prop="remark" width="80"/>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="100">
         <template slot-scope="scope">
           <el-button
             size="mini"
