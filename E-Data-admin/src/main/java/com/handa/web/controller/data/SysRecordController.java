@@ -80,8 +80,9 @@ public class SysRecordController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysRecord sysRecord)
     {
-        if(UserConstants.NOT_UNIQUE.equals(sysRecordService.checkMesidUnique(sysRecord))){
-            return AjaxResult.error("MES码已扫描，请到记录列表查询详情");
+        if(UserConstants.NOT_UNIQUE.equals(sysRecordService.checkMesIdUnique(sysRecord))){
+            return AjaxResult.success(sysRecordService.selectSysRecordByMesId(sysRecord.getMesId()));
+//            return AjaxResult.error("MES码已扫描，请到记录列表查询详情");
         }
         return toAjax(sysRecordService.insertSysRecord(sysRecord));
     }

@@ -225,15 +225,15 @@
     <!-- 添加或修改记录查询对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户工号" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入用户工号"/>
-        </el-form-item>
-        <el-form-item label="用户姓名" prop="nickName">
+<!--        <el-form-item label="用户工号" prop="userName">-->
+<!--          <el-input v-model="form.userName" placeholder="请输入用户工号"/>-->
+<!--        </el-form-item>-->
+        <el-form-item label="用户姓名" prop="nickName" aria-readonly="true">
           <el-input v-model="form.nickName" placeholder="请输入用户姓名"/>
         </el-form-item>
-        <el-form-item label="仪表序列号" prop="instrumentNumber">
-          <el-input v-model="form.instrumentNumber" placeholder="请输入仪表序列号"/>
-        </el-form-item>
+<!--        <el-form-item label="仪表序列号" prop="instrumentNumber">-->
+<!--          <el-input v-model="form.instrumentNumber" placeholder="请输入仪表序列号"/>-->
+<!--        </el-form-item>-->
         <el-form-item label="检测结果" prop="result">
           <!--          <el-input v-model="form.result" placeholder="请输入检测结果" />-->
           <el-select v-model="form.result" placeholder="请选择检测结果" @change="repair">
@@ -246,18 +246,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="MES码" prop="mesId">
-          <el-input v-model="form.mesId" placeholder="请输入MES码"/>
-        </el-form-item>
-        <el-form-item label="图号" prop="drawingNumber">
-          <el-input v-model="form.drawingNumber" placeholder="请输入图号"/>
-        </el-form-item>
-        <el-form-item label="板号" prop="boardNumber">
-          <el-input v-model="form.boardNumber" placeholder="请输入板号"/>
-        </el-form-item>
-        <el-form-item label="订单号" prop="orderNumber">
-          <el-input v-model="form.orderNumber" placeholder="请输入订单号"/>
-        </el-form-item>
+<!--        <el-form-item label="MES码" prop="mesId">-->
+<!--          <el-input v-model="form.mesId" placeholder="请输入MES码"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="图号" prop="drawingNumber">-->
+<!--          <el-input v-model="form.drawingNumber" placeholder="请输入图号"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="板号" prop="boardNumber">-->
+<!--          <el-input v-model="form.boardNumber" placeholder="请输入板号"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="订单号" prop="orderNumber">-->
+<!--          <el-input v-model="form.orderNumber" placeholder="请输入订单号"/>-->
+<!--        </el-form-item>-->
         <el-form-item label="位号" prop="tagNumber">
           <el-input v-model="form.tagNumber" placeholder="请输入位号"/>
         </el-form-item>

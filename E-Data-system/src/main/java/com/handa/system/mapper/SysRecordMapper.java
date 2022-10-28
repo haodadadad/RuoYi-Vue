@@ -62,11 +62,19 @@ public interface SysRecordMapper
     public int deleteSysRecordByRecordIds(Long[] recordIds);
 
     /**
-     * 校验Mesid是否唯一
+     * 校验MesId是否唯一
      *
      * @param mesId 用户名称
      * @return 结果
      */
-    public SysRecord checkMesidUnique(String mesId);
+    public SysRecord checkMesIdUnique(String mesId);
+
+    /**
+     * 查询记录查询
+     *
+     * @param mesId 记录查询主键
+     * @return 记录查询
+     */
+    public SysRecord selectSysRecordByMesId(String mesId);
 
 }

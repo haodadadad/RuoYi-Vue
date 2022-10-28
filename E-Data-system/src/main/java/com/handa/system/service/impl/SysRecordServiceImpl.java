@@ -14,89 +14,83 @@ import com.handa.system.service.ISysRecordService;
 
 /**
  * 记录查询Service业务层处理
- * 
+ *
  * @author guzhihao
  * @date 2022-10-10
  */
 @Service
-public class SysRecordServiceImpl implements ISysRecordService 
-{
+public class SysRecordServiceImpl implements ISysRecordService {
     @Autowired
     private SysRecordMapper sysRecordMapper;
 
     /**
      * 查询记录查询
-     * 
+     *
      * @param recordId 记录查询主键
      * @return 记录查询
      */
     @Override
-    public SysRecord selectSysRecordByRecordId(Long recordId)
-    {
+    public SysRecord selectSysRecordByRecordId(Long recordId) {
         return sysRecordMapper.selectSysRecordByRecordId(recordId);
     }
 
     /**
      * 查询记录查询列表
-     * 
+     *
      * @param sysRecord 记录查询
      * @return 记录查询
      */
     @Override
-    public List<SysRecord> selectSysRecordList(SysRecord sysRecord)
-    {
+    public List<SysRecord> selectSysRecordList(SysRecord sysRecord) {
         return sysRecordMapper.selectSysRecordList(sysRecord);
     }
 
     /**
      * 新增记录查询
-     * 
+     *
      * @param sysRecord 记录查询
      * @return 结果
      */
     @Override
-    public int insertSysRecord(SysRecord sysRecord)
-    {
+    public int insertSysRecord(SysRecord sysRecord) {
         sysRecord.setCreateTime(DateUtils.getNowDate());
         return sysRecordMapper.insertSysRecord(sysRecord);
     }
 
     /**
      * 修改记录查询
-     * 
+     *
      * @param sysRecord 记录查询
      * @return 结果
      */
     @Override
-    public int updateSysRecord(SysRecord sysRecord)
-    {
+    public int updateSysRecord(SysRecord sysRecord) {
         sysRecord.setUpdateTime(DateUtils.getNowDate());
         return sysRecordMapper.updateSysRecord(sysRecord);
     }
 
     /**
      * 批量删除记录查询
-     * 
+     *
      * @param recordIds 需要删除的记录查询主键
      * @return 结果
      */
     @Override
-    public int deleteSysRecordByRecordIds(Long[] recordIds)
-    {
+    public int deleteSysRecordByRecordIds(Long[] recordIds) {
         return sysRecordMapper.deleteSysRecordByRecordIds(recordIds);
     }
 
     /**
      * 删除记录查询信息
-     * 
+     *
      * @param recordId 记录查询主键
      * @return 结果
      */
     @Override
-    public int deleteSysRecordByRecordId(Long recordId)
-    {
+    public int deleteSysRecordByRecordId(Long recordId) {
         return sysRecordMapper.deleteSysRecordByRecordId(recordId);
     }
+
     /**
      * 校验MES ID是否唯一
      *
@@ -104,13 +98,25 @@ public class SysRecordServiceImpl implements ISysRecordService
      * @return
      */
     @Override
-    public String checkMesidUnique(SysRecord sysRecord) {
+    public String checkMesIdUnique(SysRecord sysRecord) {
         Long recordId = StringUtils.isNull(sysRecord.getRecordId()) ? -1L : sysRecord.getRecordId();
-        SysRecord info =sysRecordMapper.checkMesidUnique(sysRecord.getMesId());
-        if (StringUtils.isNotNull(info) && info.getRecordId().longValue() != recordId.longValue())
-        {
+        SysRecord info = sysRecordMapper.checkMesIdUnique(sysRecord.getMesId());
+        if (StringUtils.isNotNull(info) && info.getRecordId().longValue() != recordId.longValue()) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
     }
+
+    /**
+     * 查询MES ID记录查询
+     *
+     * @param mesId 记录查询主键
+     * @return 记录查询
+     */
+    @Override
+    public SysRecord selectSysRecordByMesId(String mesId) {
+        return sysRecordMapper.selectSysRecordByMesId(mesId);
+    }
+
+
 }

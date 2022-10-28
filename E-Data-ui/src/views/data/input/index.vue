@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form ref="$form" :model="model" label-position="left" label-width="100px" size="small">
-      <el-form-item :rules="rules.mesId" prop="mesId" label="MES码"   >
+      <el-form-item :rules="rules.mesId" prop="mesId" label="MES码">
         <el-input v-model="model.mesIdInput" placeholder="请扫描二维码" @keyup.enter.native="submitCode" autofocus clearable
                   ref="input"
                   prefix-icon="el-icon-camera"></el-input>
@@ -131,7 +131,7 @@ export default {
       forms: ['$form'],
       model: {
         mesId: '',
-        mesIdInput:'',
+        mesIdInput: '',
         nickName: '',
         userName: '',
         instrumentNumber: '',
@@ -247,9 +247,9 @@ export default {
   computed: {},
   methods: {
     reset() {
-      this.model.mesId = ""
-      this.model.mesIdInput = ""
-      this.model.phenomenon = ""
+      this.model.mesId = null
+      this.model.mesIdInput = null
+      this.model.phenomenon = null
       this.model.cause = ""
       this.model.tagNumber = ""
       this.model.result = "0"
@@ -257,18 +257,19 @@ export default {
       this.model.boardNumber = ''
       this.model.ordernum = ''
       this.model.orderNumber = ''
+      this.add
 
 
     },
     sliptmesId() {
-      this.model.mesId=this.model.mesIdInput
+      this.model.mesId = this.model.mesIdInput
       let strArr = this.model.mesId
       const arr = strArr.split('|', 6)
       this.model.drawingNumber = arr[1]
       this.model.boardNumber = arr[3]
       this.model.ordernum = arr[0]
       this.model.orderNumber = arr[4]
-      this.model.mesIdInput=''
+      this.model.mesIdInput = ''
 
     }, sliptinstrumentNumber() {
 
@@ -287,7 +288,25 @@ export default {
       this.sliptmesId()
       addRecord(this.model).then(res => {
         if (res) {
+          // this.model = res.data;
           this.$message.success("MES码扫描成功")
+
+          // console.log(res);
+          // console.log(Object.keys(res.data).length);
+          if (Object.keys(res.data).length !== 0) {
+            this.$set(this.model, 'instrumentNumber', res.data.instrumentNumber,)
+            this.$set(this.model, 'result', res.data.result,)
+            this.$set(this.model, 'phenomenon', res.data.phenomenon,)
+            this.$set(this.model, 'cause', res.data.cause,)
+            this.$set(this.model, 'tagNumber', res.data.tagNumber,)
+
+            this.unqualified(1)
+            setTimeout(() => {
+              this.$message.warning("该MES码已存在记录");
+            }, 10);
+
+          }
+
 
         } else {
           this.$message.error("扫描失败")
@@ -296,20 +315,20 @@ export default {
 
     },
 
-    repair(){
-      let strtagNumber =this.model.tagNumber
-      let strcause=this.model.cause
-      let strphenomenon=this.model.phenomenon
+    repair() {
+      let strtagNumber = this.model.tagNumber
+      let strcause = this.model.cause
+      let strphenomenon = this.model.phenomenon
 
-      if(this.model.result==='1'){
-        if(Object.keys(strcause).length === 0 || Object.keys(strtagNumber).length === 0 ||Object.keys(strphenomenon).length === 0){
+      if (this.model.result === '1') {
+        if (Object.keys(strcause).length === 0 || Object.keys(strtagNumber).length === 0 || Object.keys(strphenomenon).length === 0) {
           console.log(Object.keys(strcause).length);
           console.log(Object.keys(strtagNumber).length);
           console.log(Object.keys(strphenomenon).length);
-          this.model.result='1'
-        }else {
-          this.model.result='0'
-          this.model.remark='已修复'
+          this.model.result = '1'
+        } else {
+          this.model.result = '0'
+          this.model.remark = '已修复'
         }
       }
 
@@ -348,12 +367,19 @@ export default {
 
     unqualified: function (val) {
       if (val == 1) {
-        getPhenomenonInfo(this.model.drawingNumber).then(response => {
-          this.phenomenonOptions = response.data;
-          this.$forceUpdate()  //强制更新下拉数据
+        if (Object.keys(this.model.drawingNumber).length !== 0) {
+          getPhenomenonInfo(this.model.drawingNumber).then(response => {
+            this.phenomenonOptions = response.data;
+            this.$forceUpdate()  //强制更新下拉数据
 
-        });
+          });
+        } else {
+          this.$message.error("未获取到图号信息，请扫描MES码")
+          this.model.result = '0'
+        }
+
         console.log("点击了不合格", this.model.drawingNumber)
+        console.log()
 
       }
     },

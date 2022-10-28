@@ -61,10 +61,18 @@ public interface ISysRecordService
 
 
     /**
-     * 校验Mesid是否唯一
+     * 校验MesId是否唯一
      *
      * @param sysRecord 记录信息
      * @return 结果
      */
-    public String checkMesidUnique(SysRecord sysRecord);
+    public String checkMesIdUnique(SysRecord sysRecord);
+
+    /**
+     * 查询记录查询
+     *
+     * @param mesId 记录查询主键
+     * @return 记录查询
+     */
+    public SysRecord selectSysRecordByMesId(String mesId);
 }

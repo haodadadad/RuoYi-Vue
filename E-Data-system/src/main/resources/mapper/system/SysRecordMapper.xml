@@ -127,8 +127,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <select id="checkMesidUnique" parameterType="String" resultMap="SysRecordResult">
+    <select id="checkMesIdUnique" parameterType="String" resultMap="SysRecordResult">
         <include refid="selectSysRecordVo"/>
         where mes_id=#{mesId}  limit 1
+    </select>
+
+    <select id="selectSysRecordByMesId" parameterType="String" resultMap="SysRecordResult">
+        <include refid="selectSysRecordVo"/>
+        where mes_id = #{mesId}
     </select>
 </mapper>
